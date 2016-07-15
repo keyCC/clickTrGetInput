@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<table>
+		<tr>
+			<td><input type="checkbox"/>11111111</td>
+		</tr>
+		<tr>
+			<td><input type="checkbox"/>222222222</td>
+		</tr>
+		<tr>
+			<td><input type="checkbox"/>323333333313</td>
+		</tr>
+	</table>
+	
+	<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script> 
+	<script type="text/javascript">
+        $("table").on('click','tr',function (event) {
+        	event.stopPropagation();	//如果出现冒泡情况可以通过这句话去阻止冒泡。
+			var target=window.event.target;
+			console.info(target.localName);
+			var inp=$(this).find("input[type='checkbox']");
+			var attr =inp.prop("checked");
+			if(target.localName=="input"){		//如果没有此判断语句，会出现input的方框在点击时勾选不了。
+				console.info(111);	 
+				if (attr) {
+					$(this).css("background", "#f4f6f9");
+				} else {
+					$(this).css("background", "");
+				}			
+				//因为本来checkbox可以自主触发点击和取消,但是又在下面放了点击一次改变属性,若是点击的目标是checkbox就不用改变其属性了,只有不是checkbox的时候才改变他的属性。
+			}else{								//接下来的就是鼠标随意点击tr时，被点击的tr里的input会被勾选。
+				console.info(attr);
+				if (attr){				//布尔值判断比较好的方式。
+					inp.prop("checked",false);		//布尔值true和false不是字符串，所以不用加双引号。
+					$(this).css("background", "");
+				}else {								//jq里的属性用.prop()或者.attr()【优先考虑用.prop()】。
+					inp.prop("checked",true);
+					$(this).css("background", "#f4f6f9");
+				}
+			}
+        })
+	</script>
+</body>
+</html>
